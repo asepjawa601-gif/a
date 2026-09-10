@@ -1,0 +1,4305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Petalia — Toko Online</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,0..144,500&family=Quicksand:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+>
+
+<link
+  rel="stylesheet"
+  href="style.css"
+>
+
+
+<style>
+
+/* =========================================================
+   ADMIN LOGIN
+   ========================================================= */
+
+.admin-login-overlay{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(67,33,45,.48);
+  backdrop-filter:blur(8px);
+  z-index:9999;
+}
+
+.admin-login-overlay.show{
+  display:flex;
+}
+
+.admin-login-card{
+  position:relative;
+  width:100%;
+  max-width:420px;
+  padding:30px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 25px 70px rgba(67,33,45,.22);
+}
+
+.admin-login-close{
+  position:absolute;
+  top:12px;
+  right:14px;
+  width:36px;
+  height:36px;
+  border:0;
+  border-radius:50%;
+  background:var(--blush-soft);
+  color:var(--primary-dark);
+  font-size:24px;
+  cursor:pointer;
+}
+
+.admin-login-close:hover{
+  background:var(--blush);
+}
+
+.admin-login-icon{
+  width:60px;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 14px;
+  border-radius:18px;
+  background:var(--blush-soft);
+  font-size:28px;
+}
+
+.admin-login-card h2{
+  margin:0;
+  text-align:center;
+  font-family:var(--font-display);
+  font-size:28px;
+  color:var(--text);
+}
+
+.admin-login-subtitle{
+  margin:8px 0 22px;
+  text-align:center;
+  color:var(--text-soft);
+  font-size:13.5px;
+  line-height:1.6;
+}
+
+.admin-login-field{
+  margin-bottom:16px;
+}
+
+.admin-login-field label{
+  display:block;
+  margin-bottom:7px;
+  color:var(--text);
+  font-size:13px;
+  font-weight:700;
+}
+
+.admin-login-field > input{
+  width:100%;
+  padding:12px 14px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:14px;
+}
+
+.admin-login-field > input:focus{
+  outline:none;
+  border-color:var(--primary);
+  background:#fff;
+}
+
+
+/* =========================================================
+   PASSWORD INPUT + EYE
+   ========================================================= */
+
+.admin-password-wrap{
+  position:relative;
+  width:100%;
+}
+
+.admin-password-wrap input{
+  width:100%;
+  padding:12px 48px 12px 14px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:14px;
+}
+
+.admin-password-wrap input:focus{
+  outline:none;
+  border-color:var(--primary);
+  background:#fff;
+}
+
+.admin-eye-button{
+  position:absolute;
+  top:50%;
+  right:5px;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:var(--text-soft);
+  cursor:pointer;
+}
+
+.admin-eye-button:hover{
+  background:var(--blush-soft);
+  color:var(--primary-dark);
+}
+
+.admin-eye-button svg{
+  width:19px;
+  height:19px;
+}
+
+.admin-login-error{
+  min-height:19px;
+  margin:0 0 10px;
+  color:#B03A4E;
+  font-size:12.5px;
+  font-weight:700;
+}
+
+
+/* =========================================================
+   ADMIN PANEL
+   ========================================================= */
+
+#page-admin{
+  display:none;
+}
+
+#page-admin.active{
+  display:block;
+}
+
+.embedded-admin{
+  padding-top:30px;
+  padding-bottom:40px;
+}
+
+.admin-header-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  padding:22px;
+  margin-bottom:20px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:20px;
+}
+
+.admin-header-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.admin-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 11px;
+  border-radius:999px;
+  background:var(--text);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+}
+
+.admin-header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.stat-card{
+  padding:18px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:18px;
+}
+
+.stat-label{
+  color:var(--text-soft);
+  font-size:12.5px;
+  font-weight:700;
+}
+
+.stat-value{
+  margin-top:6px;
+  color:var(--primary-dark);
+  font-family:var(--font-display);
+  font-size:28px;
+}
+
+.admin-tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.admin-tab{
+  padding:10px 18px;
+  border-radius:999px;
+  background:var(--surface);
+  border:1.5px solid var(--line);
+  color:var(--text-soft);
+  font-size:13.5px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.admin-tab:hover{
+  border-color:var(--primary);
+  color:var(--primary-dark);
+}
+
+.admin-tab.active{
+  background:var(--text);
+  border-color:var(--text);
+  color:#fff;
+}
+
+.admin-panel{
+  display:none;
+}
+
+.admin-panel.active{
+  display:block;
+}
+
+.admin-table-wrap{
+  width:100%;
+  overflow-x:auto;
+  border-radius:16px;
+}
+
+.admin-table{
+  min-width:760px;
+}
+
+.backup-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.backup-card,
+.account-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px;
+}
+
+.backup-card h3,
+.account-card h3{
+  margin-bottom:8px;
+  font-size:18px;
+}
+
+.backup-card p,
+.account-help{
+  margin-bottom:16px;
+  color:var(--text-soft);
+  font-size:13.5px;
+  line-height:1.6;
+}
+
+.backup-note{
+  margin-top:12px;
+  color:var(--text-soft);
+  font-size:12px;
+  line-height:1.6;
+}
+
+.account-card{
+  max-width:650px;
+}
+
+.account-form-field{
+  margin-bottom:16px;
+}
+
+.account-form-field label{
+  display:block;
+  margin-bottom:7px;
+  font-size:13px;
+  font-weight:700;
+}
+
+.account-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.account-message{
+  display:none;
+  margin-top:14px;
+  padding:10px 12px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:600;
+}
+
+.account-message.success{
+  display:block;
+  background:#EDF9F0;
+  color:#287A41;
+}
+
+.account-message.error{
+  display:block;
+  background:#FFF0F2;
+  color:#B03A4E;
+}
+
+body.admin-modal-open{
+  overflow:hidden;
+}
+
+
+/* =========================================================
+   RESPONSIVE ADMIN
+   ========================================================= */
+
+@media(max-width:860px){
+
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .backup-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:600px){
+
+  .admin-login-card{
+    padding:24px 20px;
+  }
+
+  .admin-header-card{
+    align-items:flex-start;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div id="petal-field"></div>
+
+<div id="toast"></div>
+
+
+<div class="app">
+
+
+<!-- =========================================================
+     TOP NAVIGATION
+     ========================================================= -->
+
+<div class="topbar">
+
+  <div class="topbar-inner">
+
+
+    <div class="brand">
+
+      <svg
+        class="brand-mark"
+        viewBox="0 0 40 40"
+        fill="none"
+        aria-hidden="true"
+      >
+
+        <g>
+
+          <ellipse
+            cx="20"
+            cy="11"
+            rx="7"
+            ry="9"
+            fill="#F6A6C1"
+          />
+
+          <ellipse
+            cx="20"
+            cy="29"
+            rx="7"
+            ry="9"
+            fill="#F6A6C1"
+          />
+
+          <ellipse
+            cx="11"
+            cy="20"
+            rx="9"
+            ry="7"
+            fill="#F8BBD0"
+          />
+
+          <ellipse
+            cx="29"
+            cy="20"
+            rx="9"
+            ry="7"
+            fill="#F8BBD0"
+          />
+
+          <circle
+            cx="20"
+            cy="20"
+            r="6.5"
+            fill="#E85D82"
+          />
+
+        </g>
+
+      </svg>
+
+
+      <h1>
+        Petalia
+      </h1>
+
+    </div>
+
+
+    <div class="search-wrap">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+
+        <circle
+          cx="11"
+          cy="11"
+          r="7"
+        />
+
+        <line
+          x1="21"
+          y1="21"
+          x2="16.65"
+          y2="16.65"
+        />
+
+      </svg>
+
+
+      <input
+        id="search-input"
+        type="search"
+        autocomplete="off"
+        placeholder="Cari produk kesukaanmu..."
+        oninput="onSearchInput(this.value)"
+      >
+
+    </div>
+
+
+    <div class="nav-links">
+
+
+      <button
+        class="nav-btn"
+        id="nav-home"
+        type="button"
+        onclick="showPage('home')"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+
+          <path d="M3 11l9-8 9 8"/>
+
+          <path d="M5 10v10h14V10"/>
+
+        </svg>
+
+
+        <span class="label">
+          Beranda
+        </span>
+
+      </button>
+
+
+      <button
+        class="nav-btn cart-btn"
+        id="nav-cart"
+        type="button"
+        onclick="showPage('cart')"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+
+          <circle
+            cx="9"
+            cy="21"
+            r="1"
+          />
+
+          <circle
+            cx="19"
+            cy="21"
+            r="1"
+          />
+
+          <path
+            d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"
+          />
+
+        </svg>
+
+
+        <span class="label">
+          Keranjang
+        </span>
+
+
+        <span
+          class="cart-count"
+          id="cart-count"
+          style="display:none;"
+        >
+          0
+        </span>
+
+      </button>
+
+
+      <button
+        class="nav-btn"
+        id="nav-orders"
+        type="button"
+        onclick="showPage('orders')"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+
+          <path
+            d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"
+          />
+
+          <rect
+            x="9"
+            y="3"
+            width="6"
+            height="4"
+            rx="1"
+          />
+
+        </svg>
+
+
+        <span class="label">
+          Pesanan
+        </span>
+
+      </button>
+
+
+      <!-- ADMIN -->
+
+      <button
+        class="nav-btn"
+        id="nav-admin"
+        type="button"
+        onclick="openAdminLogin()"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+
+          <path
+            d="M12 2l2.4 5.3 5.8.5-4.4 3.9 1.3 5.7L12 14.9 6.9 17.4l1.3-5.7-4.4-3.9 5.8-.5z"
+          />
+
+        </svg>
+
+
+        <span class="label">
+          Admin
+        </span>
+
+      </button>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     HOME
+     ========================================================= -->
+
+<section
+  class="page active"
+  id="page-home"
+>
+
+  <div class="hero">
+
+    <div class="hero-bg"></div>
+
+
+    <div class="container hero-grid">
+
+
+      <div>
+
+        <h2>
+
+          Hal-hal kecil<br>
+
+          yang bikin harimu
+
+          <span class="accent">
+            terasa lebih manis.
+          </span>
+
+        </h2>
+
+
+        <p class="lead">
+
+          Aksesoris, dekorasi, dan perlengkapan
+          sehari-hari dengan sentuhan pink lembut —
+          dipilih untuk kamu yang suka detail yang cantik.
+
+        </p>
+
+
+        <div class="hero-actions">
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            onclick="scrollToCatalog()"
+          >
+            Mulai belanja
+          </button>
+
+
+          <button
+            class="btn btn-outline"
+            type="button"
+            onclick="showPage('cart')"
+          >
+            Lihat keranjang
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-art">
+
+        <div class="hero-blob"></div>
+
+        <div class="hero-emoji">
+          🌸
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <div class="container">
+
+
+    <div class="section">
+
+      <div
+        class="chip-row"
+        id="category-chips"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="section"
+      id="section-newest"
+    >
+
+      <div class="section-head">
+
+        <h3>
+          Baru datang
+        </h3>
+
+        <span class="sub">
+          Produk yang baru ditambahkan ke toko
+        </span>
+
+      </div>
+
+
+      <div
+        class="grid"
+        id="grid-newest"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="section"
+      id="section-bestseller"
+    >
+
+      <div class="section-head">
+
+        <h3>
+          Paling laris
+        </h3>
+
+        <span class="sub">
+          Favorit pembeli lain
+        </span>
+
+      </div>
+
+
+      <div
+        class="grid"
+        id="grid-bestseller"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="section"
+      id="section-limited"
+    >
+
+      <div class="section-head">
+
+        <h3>
+          Stok terbatas
+        </h3>
+
+        <span class="sub">
+          Sebelum kehabisan
+        </span>
+
+      </div>
+
+
+      <div
+        class="grid"
+        id="grid-limited"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="section"
+      id="section-catalog"
+    >
+
+      <div class="section-head">
+
+        <h3 id="catalog-title">
+          Semua produk
+        </h3>
+
+        <span
+          class="sub"
+          id="catalog-sub"
+        ></span>
+
+      </div>
+
+
+      <div
+        class="grid"
+        id="grid-catalog"
+      ></div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     DETAIL
+     ========================================================= -->
+
+<section
+  class="page"
+  id="page-detail"
+>
+
+  <div class="container">
+
+    <div
+      id="detail-content"
+    ></div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     CART
+     ========================================================= -->
+
+<section
+  class="page"
+  id="page-cart"
+>
+
+  <div class="container">
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <h3>
+          Keranjang belanja
+        </h3>
+
+      </div>
+
+
+      <div
+        id="cart-content"
+      ></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     ORDERS
+     ========================================================= -->
+
+<section
+  class="page"
+  id="page-orders"
+>
+
+  <div class="container">
+
+    <div class="section">
+
+      <div class="section-head">
+
+        <h3>
+          Pesanan saya
+        </h3>
+
+      </div>
+
+
+      <div
+        id="orders-content"
+      ></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     ADMIN PANEL
+     ========================================================= -->
+
+<section
+  class="page"
+  id="page-admin"
+>
+
+  <div class="container embedded-admin">
+
+
+    <div class="admin-header-card">
+
+
+      <div class="admin-header-left">
+
+
+        <div class="brand">
+
+          <svg
+            class="brand-mark"
+            viewBox="0 0 40 40"
+            fill="none"
+          >
+
+            <ellipse
+              cx="20"
+              cy="11"
+              rx="7"
+              ry="9"
+              fill="#F6A6C1"
+            />
+
+            <ellipse
+              cx="20"
+              cy="29"
+              rx="7"
+              ry="9"
+              fill="#F6A6C1"
+            />
+
+            <ellipse
+              cx="11"
+              cy="20"
+              rx="9"
+              ry="7"
+              fill="#F8BBD0"
+            />
+
+            <ellipse
+              cx="29"
+              cy="20"
+              rx="9"
+              ry="7"
+              fill="#F8BBD0"
+            />
+
+            <circle
+              cx="20"
+              cy="20"
+              r="6.5"
+              fill="#E85D82"
+            />
+
+          </svg>
+
+
+          <h1>
+            Petalia
+          </h1>
+
+        </div>
+
+
+        <span class="admin-badge">
+          PANEL ADMIN
+        </span>
+
+
+      </div>
+
+
+      <div class="admin-header-actions">
+
+
+        <button
+          class="btn btn-outline"
+          type="button"
+          onclick="closeAdminPanel()"
+        >
+          ← Kembali ke toko
+        </button>
+
+
+        <button
+          class="btn btn-ghost"
+          type="button"
+          onclick="adminLogout()"
+        >
+          Keluar
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         STATISTICS
+         ===================================================== -->
+
+    <div class="stats-grid">
+
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          Total produk
+        </div>
+
+        <div
+          class="stat-value"
+          id="admin-stat-products"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          Total stok
+        </div>
+
+        <div
+          class="stat-value"
+          id="admin-stat-stock"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-label">
+          Total pesanan
+        </div>
+
+        <div
+          class="stat-value"
+          id="admin-stat-orders"
+        >
+          0
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         TABS
+         ===================================================== -->
+
+    <div class="admin-tabs">
+
+
+      <button
+        class="admin-tab active"
+        id="admin-tab-produk"
+        type="button"
+        onclick="showAdminTab('produk')"
+      >
+        Produk
+      </button>
+
+
+      <button
+        class="admin-tab"
+        id="admin-tab-pesanan"
+        type="button"
+        onclick="showAdminTab('pesanan')"
+      >
+        Pesanan
+      </button>
+
+
+      <button
+        class="admin-tab"
+        id="admin-tab-backup"
+        type="button"
+        onclick="showAdminTab('backup')"
+      >
+        Backup & Restore
+      </button>
+
+
+      <button
+        class="admin-tab"
+        id="admin-tab-akun"
+        type="button"
+        onclick="showAdminTab('akun')"
+      >
+        Ganti Password
+      </button>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         PRODUCTS
+         ===================================================== -->
+
+    <div
+      class="admin-panel active"
+      id="admin-panel-produk"
+    >
+
+
+      <div class="form-card">
+
+
+        <h3 id="admin-product-form-title">
+          Tambah produk baru
+        </h3>
+
+
+        <div class="form-grid">
+
+
+          <div class="form-field full">
+
+            <label for="admin-f-name">
+              Nama produk
+            </label>
+
+            <input
+              id="admin-f-name"
+              type="text"
+              placeholder="Nama produk"
+            >
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="admin-f-category">
+              Kategori
+            </label>
+
+            <select
+              id="admin-f-category"
+            ></select>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="admin-f-image">
+              URL foto
+            </label>
+
+            <input
+              id="admin-f-image"
+              type="url"
+              placeholder="https://..."
+            >
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="admin-f-price">
+              Harga (Rp)
+            </label>
+
+            <input
+              id="admin-f-price"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="89000"
+            >
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="admin-f-stock">
+              Stok
+            </label>
+
+            <input
+              id="admin-f-stock"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="12"
+            >
+
+          </div>
+
+
+          <div class="form-field full">
+
+            <label for="admin-f-desc">
+              Deskripsi
+            </label>
+
+            <textarea
+              id="admin-f-desc"
+              placeholder="Deskripsi produk..."
+            ></textarea>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="form-actions">
+
+
+          <button
+            class="btn btn-primary"
+            id="admin-product-submit"
+            type="button"
+            onclick="adminSubmitProduct()"
+          >
+            Tambah produk
+          </button>
+
+
+          <button
+            class="btn btn-ghost"
+            id="admin-product-cancel"
+            type="button"
+            onclick="adminResetProductForm()"
+            style="display:none;"
+          >
+            Batal edit
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+      <div class="admin-table-wrap">
+
+
+        <table class="admin-table">
+
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Foto
+              </th>
+
+              <th>
+                Nama
+              </th>
+
+              <th>
+                Kategori
+              </th>
+
+              <th>
+                Harga
+              </th>
+
+              <th>
+                Stok
+              </th>
+
+              <th>
+                Terjual
+              </th>
+
+              <th>
+                Aksi
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody
+            id="admin-product-rows"
+          ></tbody>
+
+
+        </table>
+
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         ORDERS
+         ===================================================== -->
+
+    <div
+      class="admin-panel"
+      id="admin-panel-pesanan"
+    >
+
+      <div
+        id="admin-orders-content"
+      ></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BACKUP
+         ===================================================== -->
+
+    <div
+      class="admin-panel"
+      id="admin-panel-backup"
+    >
+
+
+      <div class="backup-grid">
+
+
+        <div class="backup-card">
+
+          <h3>
+            Backup data
+          </h3>
+
+          <p>
+            Simpan data produk dan pesanan
+            ke file JSON untuk cadangan manual.
+          </p>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            onclick="adminBackupData()"
+          >
+            Backup Data
+          </button>
+
+          <div class="backup-note">
+            Simpan file backup di komputer atau flashdisk.
+          </div>
+
+        </div>
+
+
+        <div class="backup-card">
+
+          <h3>
+            Restore data
+          </h3>
+
+          <p>
+            Pulihkan data dari file backup JSON.
+          </p>
+
+          <div class="file-input-wrap">
+
+            <button
+              class="btn btn-outline"
+              type="button"
+            >
+              Pilih file backup...
+            </button>
+
+            <input
+              id="admin-restore-file"
+              type="file"
+              accept="application/json,.json"
+              onchange="adminRestoreData(event)"
+            >
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         CHANGE PASSWORD
+         ===================================================== -->
+
+    <div
+      class="admin-panel"
+      id="admin-panel-akun"
+    >
+
+
+      <div class="account-card">
+
+
+        <h3>
+          Ganti Password Admin
+        </h3>
+
+
+        <p class="account-help">
+
+          Masukkan password lama,
+          kemudian password baru.
+          Minimal 6 karakter.
+
+        </p>
+
+
+        <!-- PASSWORD LAMA -->
+
+        <div class="account-form-field">
+
+
+          <label for="admin-old-password">
+            Password lama
+          </label>
+
+
+          <div class="admin-password-wrap">
+
+
+            <input
+              id="admin-old-password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Password lama"
+            >
+
+
+            <button
+              type="button"
+              class="admin-eye-button"
+              onclick="toggleAdminPasswordField(
+                'admin-old-password',
+                this
+              )"
+              aria-label="Lihat password"
+              title="Lihat password"
+            >
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+
+                <path
+                  d="
+                    M2 12
+                    s3.5-6 10-6
+                    s10 6 10 6
+                    s-3.5 6-10 6
+                    S2 12 2 12z
+                  "
+                />
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+
+              </svg>
+
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+
+        <!-- PASSWORD BARU -->
+
+        <div class="account-form-field">
+
+
+          <label for="admin-new-password">
+            Password baru
+          </label>
+
+
+          <div class="admin-password-wrap">
+
+
+            <input
+              id="admin-new-password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Password baru"
+            >
+
+
+            <button
+              type="button"
+              class="admin-eye-button"
+              onclick="toggleAdminPasswordField(
+                'admin-new-password',
+                this
+              )"
+              aria-label="Lihat password"
+              title="Lihat password"
+            >
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+
+                <path
+                  d="
+                    M2 12
+                    s3.5-6 10-6
+                    s10 6 10 6
+                    s-3.5 6-10 6
+                    S2 12 2 12z
+                  "
+                />
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+
+              </svg>
+
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+
+        <!-- KONFIRMASI -->
+
+        <div class="account-form-field">
+
+
+          <label for="admin-confirm-password">
+            Konfirmasi password baru
+          </label>
+
+
+          <div class="admin-password-wrap">
+
+
+            <input
+              id="admin-confirm-password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Ulangi password baru"
+            >
+
+
+            <button
+              type="button"
+              class="admin-eye-button"
+              onclick="toggleAdminPasswordField(
+                'admin-confirm-password',
+                this
+              )"
+              aria-label="Lihat password"
+              title="Lihat password"
+            >
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+
+                <path
+                  d="
+                    M2 12
+                    s3.5-6 10-6
+                    s10 6 10 6
+                    s-3.5 6-10 6
+                    S2 12 2 12z
+                  "
+                />
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+
+              </svg>
+
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+
+        <div class="account-actions">
+
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            onclick="changeAdminPassword()"
+          >
+            Simpan Password
+          </button>
+
+
+          <button
+            class="btn btn-ghost"
+            type="button"
+            onclick="adminResetPasswordForm()"
+          >
+            Bersihkan
+          </button>
+
+
+        </div>
+
+
+        <div
+          id="admin-password-message"
+          class="account-message"
+        ></div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<footer>
+
+  Petalia — toko kecil dengan sentuhan pink.
+
+</footer>
+
+
+</div>
+
+
+<!-- =========================================================
+     LOGIN ADMIN
+     ========================================================= -->
+
+<div
+  class="admin-login-overlay"
+  id="admin-login-modal"
+  aria-hidden="true"
+>
+
+
+  <div
+    class="admin-login-card"
+    onclick="event.stopPropagation()"
+  >
+
+
+    <button
+      type="button"
+      class="admin-login-close"
+      onclick="closeAdminLogin()"
+      aria-label="Tutup"
+    >
+      ×
+    </button>
+
+
+    <div class="admin-login-icon">
+      🌸
+    </div>
+
+
+    <h2>
+      Masuk Admin
+    </h2>
+
+
+    <p class="admin-login-subtitle">
+
+      Masukkan username dan password admin.
+
+    </p>
+
+
+    <form
+      onsubmit="handleAdminLogin(event)"
+    >
+
+
+      <div class="admin-login-field">
+
+
+        <label for="admin-login-username">
+          Username
+        </label>
+
+
+        <input
+          id="admin-login-username"
+          type="text"
+          autocomplete="username"
+          placeholder="Username admin"
+          required
+        >
+
+
+      </div>
+
+
+      <div class="admin-login-field">
+
+
+        <label for="admin-login-password">
+          Password
+        </label>
+
+
+        <div class="admin-password-wrap">
+
+
+          <input
+            id="admin-login-password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Password admin"
+            required
+          >
+
+
+          <button
+            type="button"
+            class="admin-eye-button"
+            onclick="toggleAdminPasswordField(
+              'admin-login-password',
+              this
+            )"
+            aria-label="Lihat password"
+            title="Lihat password"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+
+              <path
+                d="
+                  M2 12
+                  s3.5-6 10-6
+                  s10 6 10 6
+                  s-3.5 6-10 6
+                  S2 12 2 12z
+                "
+              />
+
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+
+            </svg>
+
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+      <div
+        id="admin-login-error"
+        class="admin-login-error"
+      ></div>
+
+
+      <button
+        class="btn btn-primary"
+        type="submit"
+        style="width:100%;"
+      >
+        Masuk ke Admin
+      </button>
+
+
+    </form>
+
+
+  </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     REQUIRED FILES
+     ========================================================= -->
+
+<script src="data.js"></script>
+
+<script src="app.js"></script>
+
+
+<!-- =========================================================
+     ADMIN JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+/* =============================================================
+   DEFAULT LOGIN
+   ============================================================= */
+
+const PETALIA_ADMIN_USERNAME =
+  'admin';
+
+const PETALIA_DEFAULT_ADMIN_PASSWORD =
+  'admin123';
+
+const PETALIA_ADMIN_PASSWORD_KEY =
+  'petalia_admin_password';
+
+
+let petaliaAdminProducts = [];
+
+let petaliaAdminOrders = [];
+
+let petaliaEditingProductId = null;
+
+
+/* =============================================================
+   HELPERS
+   ============================================================= */
+
+function petaliaAdminEscapeHtml(value){
+
+  return String(value ?? '')
+    .replace(
+      /[&<>"']/g,
+      function(ch){
+
+        return {
+          '&':'&amp;',
+          '<':'&lt;',
+          '>':'&gt;',
+          '"':'&quot;',
+          "'":'&#39;'
+        }[ch];
+
+      }
+    );
+
+}
+
+
+function petaliaAdminEscapeAttr(value){
+
+  return petaliaAdminEscapeHtml(value)
+    .replace(
+      /`/g,
+      '&#96;'
+    );
+
+}
+
+
+function petaliaAdminFindProduct(id){
+
+  return petaliaAdminProducts.find(
+    function(product){
+
+      return product.id === id;
+
+    }
+  );
+
+}
+
+
+function petaliaAdminPrice(value){
+
+  return 'Rp' +
+    Number(value || 0)
+      .toLocaleString('id-ID');
+
+}
+
+
+function petaliaAdminDate(value){
+
+  return new Date(value)
+    .toLocaleString(
+      'id-ID',
+      {
+        day:'numeric',
+        month:'short',
+        year:'numeric',
+        hour:'2-digit',
+        minute:'2-digit'
+      }
+    );
+
+}
+
+
+function petaliaAdminImage(product){
+
+  if(
+    product.image &&
+    String(product.image).trim()
+  ){
+
+    return String(
+      product.image
+    ).trim();
+
+  }
+
+
+  return `https://placehold.co/100x100/FFE1EC/C43F63?text=${encodeURIComponent(
+    String(product.name)
+      .split(' ')
+      .slice(0,2)
+      .join(' ')
+  )}`;
+
+}
+
+
+/* =============================================================
+   TOAST
+   ============================================================= */
+
+function petaliaAdminToast(
+  message,
+  isError = false
+){
+
+  const toast =
+    document.getElementById(
+      'toast'
+    );
+
+
+  if(!toast){
+    return;
+  }
+
+
+  toast.innerHTML = `
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+    >
+
+      <path
+        d="M20 6L9 17l-5-5"
+      />
+
+    </svg>
+
+    <span>
+
+      ${petaliaAdminEscapeHtml(
+        message
+      )}
+
+    </span>
+
+  `;
+
+
+  toast.style.background =
+    isError
+      ? '#B03A4E'
+      : 'var(--text)';
+
+
+  toast.classList.add(
+    'show'
+  );
+
+
+  clearTimeout(
+    window._petaliaAdminToast
+  );
+
+
+  window._petaliaAdminToast =
+    setTimeout(
+      function(){
+
+        toast.classList.remove(
+          'show'
+        );
+
+      },
+      2600
+    );
+
+}
+
+
+/* =============================================================
+   EYE ICON
+   ============================================================= */
+
+function petaliaEyeIcon(){
+
+  return `
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+
+      <path
+        d="
+          M2 12
+          s3.5-6 10-6
+          s10 6 10 6
+          s-3.5 6-10 6
+          S2 12 2 12z
+        "
+      />
+
+      <circle
+        cx="12"
+        cy="12"
+        r="3"
+      />
+
+    </svg>
+
+  `;
+
+}
+
+
+function petaliaEyeOffIcon(){
+
+  return `
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+
+      <path
+        d="M3 3l18 18"
+      />
+
+      <path
+        d="
+          M9.3 5.5
+          C10.1 5.2 11 5 12 5
+          C18.5 5 22 12 22 12
+        "
+      />
+
+      <path
+        d="
+          M18.6 15.5
+          C17 17.1 14.8 19 12 19
+        "
+      />
+
+      <path
+        d="
+          M6.4 6.4
+          C3.5 8.2 2 12 2 12
+          C2 12 5.5 19 12 19
+        "
+      />
+
+    </svg>
+
+  `;
+
+}
+
+
+function toggleAdminPasswordField(
+  inputId,
+  button
+){
+
+  const input =
+    document.getElementById(
+      inputId
+    );
+
+
+  if(
+    !input ||
+    !button
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    input.type === 'password'
+  ){
+
+    input.type =
+      'text';
+
+
+    button.innerHTML =
+      petaliaEyeOffIcon();
+
+
+    button.title =
+      'Sembunyikan password';
+
+
+    button.setAttribute(
+      'aria-label',
+      'Sembunyikan password'
+    );
+
+
+  }else{
+
+
+    input.type =
+      'password';
+
+
+    button.innerHTML =
+      petaliaEyeIcon();
+
+
+    button.title =
+      'Lihat password';
+
+
+    button.setAttribute(
+      'aria-label',
+      'Lihat password'
+    );
+
+  }
+
+}
+
+
+/* =============================================================
+   PASSWORD STORAGE
+   ============================================================= */
+
+async function petaliaGetAdminPassword(){
+
+  try{
+
+    if(
+      window.PetaliaStore &&
+      typeof PetaliaStore.storageGet ===
+        'function'
+    ){
+
+      const saved =
+        await PetaliaStore.storageGet(
+          PETALIA_ADMIN_PASSWORD_KEY,
+          true
+        );
+
+
+      if(
+        typeof saved === 'string' &&
+        saved.length > 0
+      ){
+
+        return saved;
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      'Password storage read error:',
+      error
+    );
+
+  }
+
+
+  try{
+
+    const local =
+      localStorage.getItem(
+        PETALIA_ADMIN_PASSWORD_KEY
+      );
+
+
+    if(
+      local &&
+      local.length > 0
+    ){
+
+      return local;
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      'localStorage read error:',
+      error
+    );
+
+  }
+
+
+  await petaliaSaveAdminPassword(
+    PETALIA_DEFAULT_ADMIN_PASSWORD
+  );
+
+
+  return PETALIA_DEFAULT_ADMIN_PASSWORD;
+
+}
+
+
+async function petaliaSaveAdminPassword(
+  password
+){
+
+  let saved = false;
+
+
+  try{
+
+    if(
+      window.PetaliaStore &&
+      typeof PetaliaStore.storageSet ===
+        'function'
+    ){
+
+      saved =
+        await PetaliaStore.storageSet(
+          PETALIA_ADMIN_PASSWORD_KEY,
+          password,
+          true
+        );
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      'Password storage write error:',
+      error
+    );
+
+  }
+
+
+  if(!saved){
+
+    try{
+
+      localStorage.setItem(
+        PETALIA_ADMIN_PASSWORD_KEY,
+        password
+      );
+
+      saved = true;
+
+    }catch(error){
+
+      console.error(
+        'localStorage write error:',
+        error
+      );
+
+    }
+
+  }
+
+
+  return saved;
+
+}
+
+
+/* =============================================================
+   LOGIN
+   ============================================================= */
+
+function openAdminLogin(){
+
+  const modal =
+    document.getElementById(
+      'admin-login-modal'
+    );
+
+
+  if(!modal){
+    return;
+  }
+
+
+  if(
+    sessionStorage.getItem(
+      'petalia_admin_logged_in'
+    ) === 'true'
+  ){
+
+    openAdminPanel();
+
+    return;
+
+  }
+
+
+  modal.classList.add(
+    'show'
+  );
+
+
+  modal.setAttribute(
+    'aria-hidden',
+    'false'
+  );
+
+
+  document.body.classList.add(
+    'admin-modal-open'
+  );
+
+
+  const username =
+    document.getElementById(
+      'admin-login-username'
+    );
+
+
+  const password =
+    document.getElementById(
+      'admin-login-password'
+    );
+
+
+  const error =
+    document.getElementById(
+      'admin-login-error'
+    );
+
+
+  if(username){
+
+    username.focus();
+
+  }
+
+
+  if(password){
+
+    password.value = '';
+
+    password.type =
+      'password';
+
+  }
+
+
+  if(error){
+
+    error.textContent = '';
+
+  }
+
+
+  const eyeButton =
+    modal.querySelector(
+      '.admin-eye-button'
+    );
+
+
+  if(eyeButton){
+
+    eyeButton.innerHTML =
+      petaliaEyeIcon();
+
+    eyeButton.title =
+      'Lihat password';
+
+  }
+
+}
+
+
+function closeAdminLogin(){
+
+  const modal =
+    document.getElementById(
+      'admin-login-modal'
+    );
+
+
+  if(!modal){
+    return;
+  }
+
+
+  modal.classList.remove(
+    'show'
+  );
+
+
+  modal.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+
+
+  document.body.classList.remove(
+    'admin-modal-open'
+  );
+
+}
+
+
+async function handleAdminLogin(event){
+
+  event.preventDefault();
+
+
+  const username =
+    document.getElementById(
+      'admin-login-username'
+    ).value.trim();
+
+
+  const password =
+    document.getElementById(
+      'admin-login-password'
+    ).value;
+
+
+  const error =
+    document.getElementById(
+      'admin-login-error'
+    );
+
+
+  const correctPassword =
+    await petaliaGetAdminPassword();
+
+
+  if(
+    username ===
+      PETALIA_ADMIN_USERNAME
+    &&
+    password ===
+      correctPassword
+  ){
+
+    sessionStorage.setItem(
+      'petalia_admin_logged_in',
+      'true'
+    );
+
+
+    closeAdminLogin();
+
+
+    await openAdminPanel();
+
+
+    petaliaAdminToast(
+      'Login admin berhasil'
+    );
+
+
+  }else{
+
+    error.textContent =
+      'Username atau password salah.';
+
+
+    document.getElementById(
+      'admin-login-password'
+    ).value = '';
+
+
+    document.getElementById(
+      'admin-login-password'
+    ).focus();
+
+  }
+
+}
+
+
+/* =============================================================
+   ADMIN PANEL
+   ============================================================= */
+
+async function openAdminPanel(){
+
+  const loggedIn =
+    sessionStorage.getItem(
+      'petalia_admin_logged_in'
+    ) === 'true';
+
+
+  if(!loggedIn){
+
+    openAdminLogin();
+
+    return;
+
+  }
+
+
+  document
+    .querySelectorAll(
+      '.page'
+    )
+    .forEach(
+      function(page){
+
+        page.classList.remove(
+          'active'
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      'page-admin'
+    )
+    ?.classList.add(
+      'active'
+    );
+
+
+  document
+    .querySelectorAll(
+      '.nav-btn'
+    )
+    .forEach(
+      function(button){
+
+        button.classList.remove(
+          'active'
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      'nav-admin'
+    )
+    ?.classList.add(
+      'active'
+    );
+
+
+  window.scrollTo({
+    top:0,
+    behavior:'auto'
+  });
+
+
+  await petaliaLoadAdminData();
+
+}
+
+
+function closeAdminPanel(){
+
+  if(
+    typeof showPage ===
+    'function'
+  ){
+
+    showPage(
+      'home'
+    );
+
+  }
+
+}
+
+
+function adminLogout(){
+
+  sessionStorage.removeItem(
+    'petalia_admin_logged_in'
+  );
+
+
+  adminResetPasswordForm();
+
+
+  closeAdminPanel();
+
+
+  petaliaAdminToast(
+    'Berhasil keluar dari panel admin'
+  );
+
+}
+
+
+/* =============================================================
+   LOAD ADMIN DATA
+   ============================================================= */
+
+async function petaliaLoadAdminData(){
+
+  try{
+
+    petaliaAdminProducts =
+      await PetaliaStore.getProducts();
+
+
+    petaliaAdminOrders =
+      await PetaliaStore.getOrders();
+
+
+    petaliaFillCategories();
+
+    petaliaRefreshAdmin();
+
+  }catch(error){
+
+    console.error(
+      'Admin load error:',
+      error
+    );
+
+
+    petaliaAdminToast(
+      'Data admin gagal dimuat',
+      true
+    );
+
+  }
+
+}
+
+
+function petaliaRefreshAdmin(){
+
+  petaliaRefreshStats();
+
+  petaliaRenderProducts();
+
+  petaliaRenderOrders();
+
+}
+
+
+/* =============================================================
+   STATISTICS
+   ============================================================= */
+
+function petaliaRefreshStats(){
+
+  document.getElementById(
+    'admin-stat-products'
+  ).textContent =
+    petaliaAdminProducts.length;
+
+
+  document.getElementById(
+    'admin-stat-stock'
+  ).textContent =
+    petaliaAdminProducts.reduce(
+      function(total,product){
+
+        return total +
+          Number(
+            product.stock || 0
+          );
+
+      },
+      0
+    );
+
+
+  document.getElementById(
+    'admin-stat-orders'
+  ).textContent =
+    petaliaAdminOrders.length;
+
+}
+
+
+/* =============================================================
+   TABS
+   ============================================================= */
+
+function showAdminTab(tab){
+
+  document
+    .querySelectorAll(
+      '.admin-tab'
+    )
+    .forEach(
+      function(button){
+
+        button.classList.remove(
+          'active'
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      '#page-admin .admin-panel'
+    )
+    .forEach(
+      function(panel){
+
+        panel.classList.remove(
+          'active'
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      'admin-tab-' + tab
+    )
+    ?.classList.add(
+      'active'
+    );
+
+
+  document
+    .getElementById(
+      'admin-panel-' + tab
+    )
+    ?.classList.add(
+      'active'
+    );
+
+}
+
+
+/* =============================================================
+   CATEGORIES
+   ============================================================= */
+
+function petaliaFillCategories(){
+
+  const select =
+    document.getElementById(
+      'admin-f-category'
+    );
+
+
+  if(!select){
+    return;
+  }
+
+
+  select.innerHTML =
+    PetaliaStore.CATEGORIES
+      .map(
+        function(category){
+
+          return `
+
+            <option
+              value="${petaliaAdminEscapeAttr(
+                category
+              )}"
+            >
+              ${petaliaAdminEscapeHtml(
+                category
+              )}
+            </option>
+
+          `;
+
+        }
+      )
+      .join('');
+
+}
+
+
+/* =============================================================
+   PRODUCTS
+   ============================================================= */
+
+function petaliaRenderProducts(){
+
+  const rows =
+    document.getElementById(
+      'admin-product-rows'
+    );
+
+
+  if(!rows){
+    return;
+  }
+
+
+  if(
+    petaliaAdminProducts.length === 0
+  ){
+
+    rows.innerHTML = `
+      <tr>
+        <td colspan="7">
+          Belum ada produk.
+        </td>
+      </tr>
+    `;
+
+
+    return;
+
+  }
+
+
+  rows.innerHTML =
+    petaliaAdminProducts
+      .map(
+        function(product){
+
+          return `
+
+            <tr>
+
+              <td>
+
+                <img
+                  src="${petaliaAdminEscapeAttr(
+                    petaliaAdminImage(product)
+                  )}"
+                  alt="${petaliaAdminEscapeAttr(
+                    product.name
+                  )}"
+                >
+
+              </td>
+
+
+              <td>
+
+                ${petaliaAdminEscapeHtml(
+                  product.name
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${petaliaAdminEscapeHtml(
+                  product.category
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${petaliaAdminPrice(
+                  product.price
+                )}
+
+              </td>
+
+
+              <td
+                class="${
+                  Number(product.stock || 0) <= 5
+                    ? 'stock-badge low'
+                    : 'stock-badge'
+                }"
+              >
+
+                ${Number(
+                  product.stock || 0
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${Number(
+                  product.sold || 0
+                )}
+
+              </td>
+
+
+              <td>
+
+                <div class="row-actions">
+
+                  <button
+                    class="btn btn-ghost btn-sm"
+                    type="button"
+                    onclick="adminEditProduct(
+                      '${petaliaAdminEscapeAttr(
+                        product.id
+                      )}'
+                    )"
+                  >
+
+                    Edit
+
+                  </button>
+
+
+                  <button
+                    class="btn btn-danger btn-sm"
+                    type="button"
+                    onclick="adminDeleteProduct(
+                      '${petaliaAdminEscapeAttr(
+                        product.id
+                      )}'
+                    )"
+                  >
+
+                    Hapus
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      )
+      .join('');
+
+}
+
+
+/* =============================================================
+   RESET PRODUCT
+   ============================================================= */
+
+function adminResetProductForm(){
+
+  petaliaEditingProductId =
+    null;
+
+
+  document.getElementById(
+    'admin-f-name'
+  ).value = '';
+
+
+  document.getElementById(
+    'admin-f-category'
+  ).value =
+    PetaliaStore.CATEGORIES[0];
+
+
+  document.getElementById(
+    'admin-f-image'
+  ).value = '';
+
+
+  document.getElementById(
+    'admin-f-price'
+  ).value = '';
+
+
+  document.getElementById(
+    'admin-f-stock'
+  ).value = '';
+
+
+  document.getElementById(
+    'admin-f-desc'
+  ).value = '';
+
+
+  document.getElementById(
+    'admin-product-form-title'
+  ).textContent =
+    'Tambah produk baru';
+
+
+  document.getElementById(
+    'admin-product-submit'
+  ).textContent =
+    'Tambah produk';
+
+
+  document.getElementById(
+    'admin-product-cancel'
+  ).style.display =
+    'none';
+
+}
+
+
+/* =============================================================
+   EDIT PRODUCT
+   ============================================================= */
+
+function adminEditProduct(id){
+
+  const product =
+    petaliaAdminFindProduct(id);
+
+
+  if(!product){
+    return;
+  }
+
+
+  petaliaEditingProductId =
+    id;
+
+
+  document.getElementById(
+    'admin-f-name'
+  ).value =
+    product.name || '';
+
+
+  document.getElementById(
+    'admin-f-category'
+  ).value =
+    product.category ||
+    PetaliaStore.CATEGORIES[0];
+
+
+  document.getElementById(
+    'admin-f-image'
+  ).value =
+    product.image || '';
+
+
+  document.getElementById(
+    'admin-f-price'
+  ).value =
+    Number(
+      product.price || 0
+    );
+
+
+  document.getElementById(
+    'admin-f-stock'
+  ).value =
+    Number(
+      product.stock || 0
+    );
+
+
+  document.getElementById(
+    'admin-f-desc'
+  ).value =
+    product.desc || '';
+
+
+  document.getElementById(
+    'admin-product-form-title'
+  ).textContent =
+    'Edit produk: ' +
+    product.name;
+
+
+  document.getElementById(
+    'admin-product-submit'
+  ).textContent =
+    'Simpan perubahan';
+
+
+  document.getElementById(
+    'admin-product-cancel'
+  ).style.display =
+    'inline-flex';
+
+}
+
+
+/* =============================================================
+   ADD / UPDATE PRODUCT
+   ============================================================= */
+
+async function adminSubmitProduct(){
+
+  const name =
+    document.getElementById(
+      'admin-f-name'
+    ).value.trim();
+
+
+  const category =
+    document.getElementById(
+      'admin-f-category'
+    ).value;
+
+
+  const image =
+    document.getElementById(
+      'admin-f-image'
+    ).value.trim();
+
+
+  const price =
+    Number(
+      document.getElementById(
+        'admin-f-price'
+      ).value
+    );
+
+
+  const stock =
+    Number(
+      document.getElementById(
+        'admin-f-stock'
+      ).value
+    );
+
+
+  const desc =
+    document.getElementById(
+      'admin-f-desc'
+    ).value.trim();
+
+
+  if(
+
+    !name ||
+
+    !Number.isInteger(price) ||
+
+    price < 0 ||
+
+    !Number.isInteger(stock) ||
+
+    stock < 0
+
+  ){
+
+    petaliaAdminToast(
+      'Nama, harga, dan stok harus diisi dengan benar',
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  const editing =
+    !!petaliaEditingProductId;
+
+
+  if(editing){
+
+    const product =
+      petaliaAdminFindProduct(
+        petaliaEditingProductId
+      );
+
+
+    if(!product){
+      return;
+    }
+
+
+    Object.assign(
+      product,
+      {
+
+        name:name,
+
+        category:category,
+
+        image:image,
+
+        price:price,
+
+        stock:stock,
+
+        desc:desc
+
+      }
+    );
+
+
+  }else{
+
+    petaliaAdminProducts.push({
+
+      id:
+        'p' +
+        Date.now(),
+
+      name:name,
+
+      category:category,
+
+      image:image,
+
+      price:price,
+
+      stock:stock,
+
+      sold:0,
+
+      desc:desc,
+
+      addedAt:
+        new Date()
+          .toISOString()
+
+    });
+
+  }
+
+
+  const saved =
+    await PetaliaStore.saveProducts(
+      petaliaAdminProducts
+    );
+
+
+  if(!saved){
+
+    petaliaAdminProducts =
+      await PetaliaStore.getProducts();
+
+
+    petaliaRefreshAdmin();
+
+
+    petaliaAdminToast(
+      'Gagal menyimpan produk',
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+   * Sinkronkan data toko.
+   */
+
+  if(
+    typeof products !==
+    'undefined'
+  ){
+
+    products =
+      petaliaAdminProducts;
+
+  }
+
+
+  if(
+    typeof renderHome ===
+    'function'
+  ){
+
+    renderHome();
+
+  }
+
+
+  adminResetProductForm();
+
+  petaliaRefreshAdmin();
+
+
+  petaliaAdminToast(
+    editing
+      ? 'Produk berhasil diperbarui'
+      : 'Produk berhasil ditambahkan'
+  );
+
+}
+
+
+/* =============================================================
+   DELETE PRODUCT
+   ============================================================= */
+
+async function adminDeleteProduct(id){
+
+  const product =
+    petaliaAdminFindProduct(id);
+
+
+  if(!product){
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      `Hapus "${product.name}" dari toko?`
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  petaliaAdminProducts =
+    petaliaAdminProducts.filter(
+      function(item){
+
+        return item.id !== id;
+
+      }
+    );
+
+
+  const cart =
+    await PetaliaStore.getCart();
+
+
+  const newCart =
+    cart.filter(
+      function(item){
+
+        return item.productId !== id;
+
+      }
+    );
+
+
+  const productsSaved =
+    await PetaliaStore.saveProducts(
+      petaliaAdminProducts
+    );
+
+
+  const cartSaved =
+    await PetaliaStore.saveCart(
+      newCart
+    );
+
+
+  if(
+    !productsSaved ||
+    !cartSaved
+  ){
+
+    petaliaAdminProducts =
+      await PetaliaStore.getProducts();
+
+
+    petaliaRefreshAdmin();
+
+
+    petaliaAdminToast(
+      'Perubahan gagal disimpan',
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    typeof products !==
+    'undefined'
+  ){
+
+    products =
+      petaliaAdminProducts;
+
+  }
+
+
+  if(
+    typeof renderHome ===
+    'function'
+  ){
+
+    renderHome();
+
+  }
+
+
+  if(
+    petaliaEditingProductId ===
+    id
+  ){
+
+    adminResetProductForm();
+
+  }
+
+
+  petaliaRefreshAdmin();
+
+
+  petaliaAdminToast(
+    'Produk berhasil dihapus'
+  );
+
+}
+
+
+/* =============================================================
+   ORDERS
+   ============================================================= */
+
+function petaliaRenderOrders(){
+
+  const wrap =
+    document.getElementById(
+      'admin-orders-content'
+    );
+
+
+  if(!wrap){
+    return;
+  }
+
+
+  if(
+    petaliaAdminOrders.length ===
+    0
+  ){
+
+    wrap.innerHTML = `
+
+      <div class="empty-state">
+
+        <p class="title">
+
+          Belum ada pesanan masuk
+
+        </p>
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  wrap.innerHTML =
+    petaliaAdminOrders
+      .map(
+        function(order){
+
+          return `
+
+            <div class="order-card">
+
+
+              <div class="order-head">
+
+
+                <div>
+
+                  <div class="order-id">
+
+                    ${petaliaAdminEscapeHtml(
+                      order.id
+                    )}
+
+                  </div>
+
+
+                  <div class="order-time">
+
+                    ${petaliaAdminDate(
+                      order.time
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <span class="order-status">
+
+                  ${petaliaAdminEscapeHtml(
+                    order.status
+                  )}
+
+                </span>
+
+
+              </div>
+
+
+              ${
+                (order.items || [])
+                  .map(
+                    function(item){
+
+                      return `
+
+                        <div class="order-line">
+
+                          <span>
+
+                            ${petaliaAdminEscapeHtml(
+                              item.name
+                            )}
+
+                            <span class="muted">
+
+                              × ${item.qty}
+
+                            </span>
+
+                          </span>
+
+
+                          <span>
+
+                            ${petaliaAdminPrice(
+                              item.price *
+                              item.qty
+                            )}
+
+                          </span>
+
+                        </div>
+
+                      `;
+
+                    }
+                  )
+                  .join('')
+              }
+
+
+              <div class="order-total">
+
+                Total
+
+
+                <span class="amt">
+
+                  ${petaliaAdminPrice(
+                    order.total
+                  )}
+
+                </span>
+
+              </div>
+
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join('');
+
+}
+
+
+/* =============================================================
+   BACKUP
+   ============================================================= */
+
+function adminBackupData(){
+
+  const backup = {
+
+    backupVersion:1,
+
+    exportedAt:
+      new Date()
+        .toISOString(),
+
+    products:
+      petaliaAdminProducts,
+
+    orders:
+      petaliaAdminOrders
+
+  };
+
+
+  const blob =
+    new Blob(
+      [
+        JSON.stringify(
+          backup,
+          null,
+          2
+        )
+      ],
+      {
+        type:'application/json'
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const link =
+    document.createElement(
+      'a'
+    );
+
+
+  link.href =
+    url;
+
+
+  link.download =
+    'petalia-backup-' +
+    new Date()
+      .toISOString()
+      .slice(0,10) +
+    '.json';
+
+
+  document.body.appendChild(
+    link
+  );
+
+
+  link.click();
+
+
+  link.remove();
+
+
+  URL.revokeObjectURL(
+    url
+  );
+
+
+  petaliaAdminToast(
+    'Backup berhasil dibuat'
+  );
+
+}
+
+
+/* =============================================================
+   RESTORE
+   ============================================================= */
+
+async function adminRestoreData(
+  event
+){
+
+  const file =
+    event.target.files?.[0];
+
+
+  if(!file){
+    return;
+  }
+
+
+  try{
+
+    const text =
+      await file.text();
+
+
+    const backup =
+      JSON.parse(
+        text
+      );
+
+
+    if(
+
+      !Array.isArray(
+        backup.products
+      ) ||
+
+      !Array.isArray(
+        backup.orders
+      )
+
+    ){
+
+      throw new Error(
+        'Backup tidak valid'
+      );
+
+    }
+
+
+    const confirmed =
+      confirm(
+        'Restore akan mengganti data produk dan pesanan saat ini. Lanjutkan?'
+      );
+
+
+    if(!confirmed){
+
+      event.target.value =
+        '';
+
+      return;
+
+    }
+
+
+    const productsSaved =
+      await PetaliaStore.saveProducts(
+        backup.products
+      );
+
+
+    const ordersSaved =
+      await PetaliaStore.saveOrders(
+        backup.orders
+      );
+
+
+    if(
+      !productsSaved ||
+      !ordersSaved
+    ){
+
+      throw new Error(
+        'Gagal menyimpan data'
+      );
+
+    }
+
+
+    petaliaAdminProducts =
+      backup.products;
+
+
+    petaliaAdminOrders =
+      backup.orders;
+
+
+    if(
+      typeof products !==
+      'undefined'
+    ){
+
+      products =
+        backup.products;
+
+    }
+
+
+    if(
+      typeof orders !==
+      'undefined'
+    ){
+
+      orders =
+        backup.orders;
+
+    }
+
+
+    petaliaRefreshAdmin();
+
+
+    if(
+      typeof renderHome ===
+      'function'
+    ){
+
+      renderHome();
+
+    }
+
+
+    if(
+      typeof renderOrders ===
+      'function'
+    ){
+
+      renderOrders();
+
+    }
+
+
+    petaliaAdminToast(
+      'Data berhasil dipulihkan'
+    );
+
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+
+    petaliaAdminToast(
+      'File backup tidak valid',
+      true
+    );
+
+
+  }finally{
+
+    event.target.value =
+      '';
+
+  }
+
+}
+
+
+/* =============================================================
+   CHANGE PASSWORD
+   ============================================================= */
+
+function petaliaShowPasswordMessage(
+  message,
+  type
+){
+
+  const box =
+    document.getElementById(
+      'admin-password-message'
+    );
+
+
+  if(!box){
+    return;
+  }
+
+
+  box.textContent =
+    message;
+
+
+  box.className =
+    'account-message ' +
+    type;
+
+
+  box.style.display =
+    'block';
+
+}
+
+
+function adminResetPasswordForm(){
+
+  const fields = [
+
+    'admin-old-password',
+
+    'admin-new-password',
+
+    'admin-confirm-password'
+
+  ];
+
+
+  fields.forEach(
+    function(id){
+
+      const input =
+        document.getElementById(
+          id
+        );
+
+
+      if(input){
+
+        input.value = '';
+
+        input.type =
+          'password';
+
+      }
+
+    }
+  );
+
+
+  document
+    .querySelectorAll(
+      '#admin-panel-akun .admin-eye-button'
+    )
+    .forEach(
+      function(button){
+
+        button.innerHTML =
+          petaliaEyeIcon();
+
+        button.title =
+          'Lihat password';
+
+        button.setAttribute(
+          'aria-label',
+          'Lihat password'
+        );
+
+      }
+    );
+
+
+  const message =
+    document.getElementById(
+      'admin-password-message'
+    );
+
+
+  if(message){
+
+    message.style.display =
+      'none';
+
+  }
+
+}
+
+
+async function changeAdminPassword(){
+
+  const oldPassword =
+    document.getElementById(
+      'admin-old-password'
+    ).value;
+
+
+  const newPassword =
+    document.getElementById(
+      'admin-new-password'
+    ).value;
+
+
+  const confirmPassword =
+    document.getElementById(
+      'admin-confirm-password'
+    ).value;
+
+
+  if(
+    !oldPassword ||
+    !newPassword ||
+    !confirmPassword
+  ){
+
+    petaliaShowPasswordMessage(
+      'Semua kolom password harus diisi.',
+      'error'
+    );
+
+
+    return;
+
+  }
+
+
+  const currentPassword =
+    await petaliaGetAdminPassword();
+
+
+  if(
+    oldPassword !==
+    currentPassword
+  ){
+
+    petaliaShowPasswordMessage(
+      'Password lama salah.',
+      'error'
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    newPassword.length < 6
+  ){
+
+    petaliaShowPasswordMessage(
+      'Password baru minimal 6 karakter.',
+      'error'
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    newPassword !==
+    confirmPassword
+  ){
+
+    petaliaShowPasswordMessage(
+      'Konfirmasi password tidak sama.',
+      'error'
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    newPassword ===
+    oldPassword
+  ){
+
+    petaliaShowPasswordMessage(
+      'Password baru harus berbeda dari password lama.',
+      'error'
+    );
+
+
+    return;
+
+  }
+
+
+  const saved =
+    await petaliaSaveAdminPassword(
+      newPassword
+    );
+
+
+  if(!saved){
+
+    petaliaShowPasswordMessage(
+      'Password gagal disimpan.',
+      'error'
+    );
+
+
+    return;
+
+  }
+
+
+  adminResetPasswordForm();
+
+
+  petaliaShowPasswordMessage(
+    'Password berhasil diganti.',
+    'success'
+  );
+
+
+  petaliaAdminToast(
+    'Password admin berhasil diganti'
+  );
+
+}
+
+
+/* =============================================================
+   MODAL
+   ============================================================= */
+
+document.addEventListener(
+  'keydown',
+  function(event){
+
+    if(
+      event.key === 'Escape'
+    ){
+
+      closeAdminLogin();
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  'DOMContentLoaded',
+  function(){
+
+    const modal =
+      document.getElementById(
+        'admin-login-modal'
+      );
+
+
+    if(modal){
+
+      modal.addEventListener(
+        'click',
+        function(){
+
+          closeAdminLogin();
+
+        }
+      );
+
+    }
+
+  }
+);
+
+</script>
+
+
+</body>
+</html>
